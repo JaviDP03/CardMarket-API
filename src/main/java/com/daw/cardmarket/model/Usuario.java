@@ -18,5 +18,6 @@ public class Usuario {
     private String email;
     private String telefono;
     private Date fechaNacimiento;
+    private List<Pedido> pedidos;
     private List<Direccion> direcciones;
 }
