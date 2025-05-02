@@ -2,6 +2,7 @@ package com.daw.cardmarket.controller;
 
 import com.daw.cardmarket.model.Login;
 import com.daw.cardmarket.service.UsuarioService;
+import com.daw.cardmarket.utils.JwtUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -18,6 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class UsuarioController {
 
     @Autowired
+    private JwtUtils jwtUtils;
+
+    @Autowired
     private UsuarioService usuarioService;
 
     @Operation(
@@ -29,9 +33,9 @@ public class UsuarioController {
             @ApiResponse(responseCode = "401", description = "Error en el login", content = @Content)
     })
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody Login login) {
+    public ResponseEntity<?> login(@RequestBody Login login) {
         if (usuarioService.comprobarUsuario(login)) {
-            return ResponseEntity.ok("Logueado con éxito");
+            return ResponseEntity.ok(jwtUtils.generateToken(login.getUsername()));
         }
 
         return ResponseEntity.status(401).body("Error en el login");
