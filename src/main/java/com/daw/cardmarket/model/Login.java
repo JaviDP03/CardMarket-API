@@ -21,6 +21,7 @@ public class Login {
             Login login = new Login();
             login.setUsername(rs.getString("nombre_usuario"));
             login.setPassword(rs.getString("contrasenna"));
+
             return login;
         }
     }
