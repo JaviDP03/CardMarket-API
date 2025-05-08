@@ -55,7 +55,7 @@ public class AdminController {
     @PostMapping("/registro")
     public ResponseEntity<Boolean> crearAdmin(@RequestBody Admin admin) {
         if (adminService.crearAdmin(admin)) {
-            return ResponseEntity.ok(true);
+            return ResponseEntity.status(HttpStatus.CREATED).body(true);
         }
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);

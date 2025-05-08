@@ -55,7 +55,7 @@ public class UsuarioController {
     @PostMapping("/registro")
     public ResponseEntity<Boolean> crearUsuario(@RequestBody Usuario usuario) {
         if (usuarioService.crearUsuario(usuario)) {
-            return ResponseEntity.ok(true);
+            return ResponseEntity.status(HttpStatus.CREATED).body(true);
         }
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
