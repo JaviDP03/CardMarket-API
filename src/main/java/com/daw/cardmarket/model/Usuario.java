@@ -1,43 +1,31 @@
 package com.daw.cardmarket.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.jdbc.core.RowMapper;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
+@Entity
 @NoArgsConstructor
 @Getter
 @Setter
-public class Usuario {
-    private int id;
-    private String nombreUsuario;
-    private String contrasenna;
-    private String nombre;
-    private String apellido;
-    private String email;
+public class Usuario extends Actor {
+
+    @Pattern(regexp = "^([6789]\\d{8})?$")
     private String telefono;
+
+    @NotBlank
     private Date fechaNacimiento;
+
+    @OneToMany
     private List<Pedido> pedidos;
+
+    @OneToMany
     private List<Direccion> direcciones;
-
-    public static class UsuarioRowMapper implements RowMapper<Usuario> {
-        @Override
-        public Usuario mapRow(ResultSet rs, int rowNum) throws SQLException {
-            Usuario usuario = new Usuario();
-            usuario.setId(rs.getInt("id"));
-            usuario.setNombreUsuario(rs.getString("nombre_usuario"));
-            usuario.setNombre(rs.getString("nombre"));
-            usuario.setApellido(rs.getString("apellido"));
-            usuario.setEmail(rs.getString("email"));
-            usuario.setTelefono(rs.getString("telefono"));
-            usuario.setFechaNacimiento(rs.getDate("fecha_nac"));
-
-            return usuario;
-        }
-    }
 }

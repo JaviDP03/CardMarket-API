@@ -1,27 +1,20 @@
 package com.daw.cardmarket.model;
 
+import jakarta.persistence.Entity;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.jdbc.core.RowMapper;
 
+@Entity
 @NoArgsConstructor
 @Getter
 @Setter
-public class Categoria {
-    private int id;
+public class Categoria extends DomainEntity {
+
+    @NotBlank
     private String nombre;
+
+    @NotBlank
     private String descripcion;
-
-    public static class CategoriaRowMapper implements RowMapper<Categoria> {
-        @Override
-        public Categoria mapRow(java.sql.ResultSet rs, int rowNum) throws java.sql.SQLException {
-            Categoria categoria = new Categoria();
-            categoria.setId(rs.getInt("id"));
-            categoria.setNombre(rs.getString("nombre"));
-            categoria.setDescripcion(rs.getString("descripcion"));
-
-            return categoria;
-        }
-    }
 }

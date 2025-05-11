@@ -1,14 +1,13 @@
 package com.daw.cardmarket.repository;
 
 import com.daw.cardmarket.model.Actor;
-import com.daw.cardmarket.model.Admin;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface AdminRepository extends JpaRepository<Admin, Integer> {
+public interface ActorRepository extends JpaRepository<Actor, Integer> {
 
-    public Optional<Admin> findByUsername(String username);
+    public Optional<Actor> findByUsername(String username);
 }
