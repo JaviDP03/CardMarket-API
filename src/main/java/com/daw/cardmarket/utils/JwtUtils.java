@@ -1,9 +1,17 @@
 package com.daw.cardmarket.utils;
 
+import com.daw.cardmarket.model.Actor;
 import com.daw.cardmarket.model.Token;
+import com.daw.cardmarket.service.ActorService;
+import com.daw.cardmarket.service.AdminService;
+import com.daw.cardmarket.service.UsuarioService;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
+import io.micrometer.common.util.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -13,6 +21,19 @@ import java.util.Date;
 
 @Component
 public class JwtUtils {
+
+    @Autowired
+    @Lazy
+    private ActorService actorService;
+
+    @Autowired
+    @Lazy
+    private AdminService adminService;
+
+    @Autowired
+    @Lazy
+    private UsuarioService usuarioService;
+
     private final String jwtSecret = "miSuperClaveSecretaParaJWT123456789";
     private final int jwtExpirationMs = 86400000; // 1 día en milisegundos
 
@@ -69,5 +90,27 @@ public class JwtUtils {
         }
 
         return false;
+    }
+
+    public <T> T userLogin() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        if (StringUtils.isEmpty(username)) {
+            return null;
+        }
+
+        Actor actor = actorService.findByUsername(username);
+
+        if (actor == null) {
+            return null;
+        }
+
+        switch (actor.getRol()) {
+            case ADMIN:
+                return (T) adminService.findByUsername(username).orElse(null);
+            case USUARIO:
+                return (T) usuarioService.findByUsername(username).orElse(null);
+            default:
+                return null;
+        }
     }
 }

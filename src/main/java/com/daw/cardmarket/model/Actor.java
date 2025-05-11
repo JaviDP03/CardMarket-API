@@ -31,4 +31,6 @@ public class Actor extends DomainEntity {
     @NotBlank
     @Email
     private String email;
+
+    private Roles rol;
 }
