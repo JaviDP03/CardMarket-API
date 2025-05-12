@@ -22,12 +22,14 @@ public class ActorService implements UserDetailsService {
     private ActorRepository actorRepository;
 
     @Transactional
-    public void saveActor(Actor actor) {
-        actorRepository.save(actor);
+    public boolean saveActor(Actor actor) {
+        Actor actorC = actorRepository.save(actor);
+
+        return actorC.getId() != null;
     }
 
     public Actor findByUsername(String username) {
-        return actorRepository.findByUsername(username);
+        return actorRepository.findByNombreUsuario(username);
     }
 
     @Override

@@ -25,15 +25,17 @@ public class UsuarioService {
     private JwtUtils jwtUtils;
 
     @Transactional
-    public void createUsuario(Usuario usuario) {
+    public boolean createUsuario(Usuario usuario) {
         usuario.setRol(Roles.USUARIO);
         usuario.setContrasenna(passwordEncoder.encode(usuario.getContrasenna()));
 
-        usuarioRepository.save(usuario);
+        Usuario usuarioC = usuarioRepository.save(usuario);
+
+        return usuarioC.getId() != null;
     }
 
     @Transactional
-    public void updateUsuario(Usuario usuarioU) {
+    public boolean updateUsuario(Usuario usuarioU) {
         Usuario usuario = jwtUtils.userLogin();
 
         if (usuario != null) {
@@ -46,7 +48,11 @@ public class UsuarioService {
             usuario.setDirecciones(usuarioU.getDirecciones());
 
             usuarioRepository.save(usuario);
+
+            return true;
         }
+
+        return false;
     }
 
     public List<Usuario> getAllUsuarios() {
@@ -58,15 +64,19 @@ public class UsuarioService {
     }
 
     public Optional<Usuario> findByUsername(String username) {
-        return usuarioRepository.findByUsername(username);
+        return usuarioRepository.findByNombreUsuario(username);
     }
 
     @Transactional
-    public void deleteUsuario(int id) {
+    public boolean deleteUsuario(int id) {
         Usuario usuario = jwtUtils.userLogin();
 
         if (usuario != null) {
             usuarioRepository.deleteById(id);
+
+            return true;
         }
+
+        return false;
     }
 }

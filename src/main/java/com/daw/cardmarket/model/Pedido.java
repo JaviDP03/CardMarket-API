@@ -1,7 +1,6 @@
 package com.daw.cardmarket.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,6 +20,9 @@ public class Pedido extends DomainEntity {
 
     @NotBlank
     private Date fechaCreacion;
+
+    @ManyToOne
+    private Direccion direccion;
 
     @OneToMany
     private List<ItemPedido> items;

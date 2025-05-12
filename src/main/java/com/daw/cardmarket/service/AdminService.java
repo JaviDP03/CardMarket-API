@@ -25,15 +25,17 @@ public class AdminService {
     private JwtUtils jwtUtils;
 
     @Transactional
-    public void createAdmin(Admin admin) {
+    public boolean createAdmin(Admin admin) {
         admin.setRol(Roles.ADMIN);
         admin.setContrasenna(passwordEncoder.encode(admin.getContrasenna()));
 
-        adminRepository.save(admin);
+        Admin adminC = adminRepository.save(admin);
+
+        return adminC.getId() != null;
     }
 
     @Transactional
-    public void updateAdmin(Admin adminU) {
+    public boolean updateAdmin(Admin adminU) {
         Admin admin = jwtUtils.userLogin();
 
         if (admin != null) {
@@ -43,7 +45,11 @@ public class AdminService {
             admin.setContrasenna(passwordEncoder.encode(adminU.getContrasenna()));
 
             adminRepository.save(admin);
+
+            return true;
         }
+
+        return false;
     }
 
     public List<Admin> getAllAdmins() {
@@ -55,15 +61,19 @@ public class AdminService {
     }
 
     public Optional<Admin> findByUsername(String username) {
-        return adminRepository.findByUsername(username);
+        return adminRepository.findByNombreUsuario(username);
     }
 
     @Transactional
-    public void deleteAdmin(int id) {
+    public boolean deleteAdmin(int id) {
         Admin admin = jwtUtils.userLogin();
 
         if (admin != null) {
             adminRepository.deleteById(id);
+
+            return true;
         }
+
+        return false;
     }
 }

@@ -16,22 +16,32 @@ public class ProductoService {
     private ProductoRepository productoRepository;
 
     @Transactional
-    public void createProducto(Producto producto) {
-        productoRepository.save(producto);
+    public boolean createProducto(Producto producto) {
+        Producto productoC = productoRepository.save(producto);
+
+        return productoC.getId() != null;
     }
 
     @Transactional
-    public void updateProducto(Producto productoU) {
-        Producto producto = productoRepository.findById(productoU.getId()).get();
+    public boolean updateProducto(Producto productoU) {
+        Optional<Producto> productoO = productoRepository.findById(productoU.getId());
 
-        producto.setNombre(productoU.getNombre());
-        producto.setDescripcion(productoU.getDescripcion());
-        producto.setPrecio(productoU.getPrecio());
-        producto.setStock(productoU.getStock());
-        producto.setUrlImagen(productoU.getUrlImagen());
-        producto.setCategoria(productoU.getCategoria());
+        if (productoO.isPresent()) {
+            Producto producto = productoO.get();
 
-        productoRepository.save(producto);
+            producto.setNombre(productoU.getNombre());
+            producto.setDescripcion(productoU.getDescripcion());
+            producto.setPrecio(productoU.getPrecio());
+            producto.setStock(productoU.getStock());
+            producto.setUrlImagen(productoU.getUrlImagen());
+            producto.setCategoria(productoU.getCategoria());
+
+            productoRepository.save(producto);
+
+            return true;
+        }
+
+        return false;
     }
 
     public List<Producto> getAllProductos() {
@@ -42,9 +52,13 @@ public class ProductoService {
         return productoRepository.findById(id);
     }
 
-    public void deleteProducto(int id) {
+    public boolean deleteProducto(int id) {
         if (productoRepository.existsById(id)) {
             productoRepository.deleteById(id);
+
+            return true;
         }
+
+        return false;
     }
 }
