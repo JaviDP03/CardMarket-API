@@ -1,6 +1,7 @@
 package com.daw.cardmarket.service;
 
 import com.daw.cardmarket.model.Direccion;
+import com.daw.cardmarket.model.Pedido;
 import com.daw.cardmarket.repository.DireccionRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,9 @@ public class DireccionService {
 
     @Autowired
     private DireccionRepository direccionRepository;
+
+    @Autowired
+    private PedidoService pedidoService;
 
     @Transactional
     public boolean createDireccion(Direccion direccion) {
@@ -54,9 +58,20 @@ public class DireccionService {
 
     @Transactional
     public boolean deleteDireccion(int id) {
-        if (direccionRepository.existsById(id)) {
-            direccionRepository.deleteById(id);
 
+        if (direccionRepository.existsById(id)) {
+            List<Pedido> listaPedidos = pedidoService.getAllPedidos();
+            Direccion direccion = direccionRepository.findById(id).get();
+
+            for (Pedido pedido : listaPedidos) {
+                if (pedido.getDireccion() == direccion) {
+                    pedido.setDireccion(null);
+                    pedidoService.updatePedido(pedido);
+                }
+            }
+
+            direccionRepository.deleteById(id);
+            
             return true;
         }
 

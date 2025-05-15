@@ -22,7 +22,7 @@ public class ValoracionService {
         return valoracionC.getId() != null;
     }
 
-    public List<Valoracion> getValoraciones() {
+    public List<Valoracion> getValoracionesByProducto(int idProducto) {
         return valoracionRepository.findAll();
     }
 

@@ -10,6 +10,8 @@ import java.util.Date;
 @Getter
 @Setter
 public class Token {
+
     private String token;
+
     private Date fechaExpiracion;
 }

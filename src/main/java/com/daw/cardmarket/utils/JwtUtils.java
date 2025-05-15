@@ -5,10 +5,14 @@ import com.daw.cardmarket.model.Token;
 import com.daw.cardmarket.service.ActorService;
 import com.daw.cardmarket.service.AdminService;
 import com.daw.cardmarket.service.UsuarioService;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
 import io.micrometer.common.util.StringUtils;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -34,10 +38,10 @@ public class JwtUtils {
     @Lazy
     private UsuarioService usuarioService;
 
-    private final String jwtSecret = "miSuperClaveSecretaParaJWT123456789";
-    private final int jwtExpirationMs = 86400000; // 1 día en milisegundos
+    private static final String jwtSecret = "miSuperClaveSecretaParaJWT123456789";
+    private static final int jwtExpirationMs = 86400000; // 1 día en milisegundos
 
-    public Token generateToken(String usuario) {
+    public static Token generateToken(String usuario) {
         Key key = Keys.hmacShaKeyFor(jwtSecret.getBytes());
         Date fechaExpiracion = new Date(new Date().getTime() + jwtExpirationMs);
 
@@ -51,7 +55,15 @@ public class JwtUtils {
         return new Token(token, fechaExpiracion);
     }
 
-    public String getUsernameFromToken(String token) {
+    public static String getToken(HttpServletRequest request) {
+        String tokenBearer = request.getHeader("Authorization");
+        if (tokenBearer != null && tokenBearer.startsWith("Bearer ")) {
+            return tokenBearer.substring(7);
+        }
+        return null;
+    }
+
+    public static String getUsernameFromToken(String token) {
         SecretKey key = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
 
         return Jwts.parser()
@@ -61,7 +73,17 @@ public class JwtUtils {
                 .getPayload().getSubject();
     }
 
-    public boolean validateToken(String token) {
+    public static Date getExpirationDateFromToken(String token) {
+        SecretKey key = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
+
+        return Jwts.parser()
+                .verifyWith(key)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload().getExpiration();
+    }
+
+    public static boolean validateToken(String token) {
         try {
             SecretKey key = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
 

@@ -10,7 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class DomainEntity {
+public abstract class DomainEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;

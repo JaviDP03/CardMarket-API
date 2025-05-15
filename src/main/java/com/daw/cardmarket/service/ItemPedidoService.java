@@ -1,6 +1,7 @@
 package com.daw.cardmarket.service;
 
 import com.daw.cardmarket.model.ItemPedido;
+import com.daw.cardmarket.model.Pedido;
 import com.daw.cardmarket.repository.ItemPedidoRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,9 @@ public class ItemPedidoService {
 
     @Autowired
     private ItemPedidoRepository itemPedidoRepository;
+
+    @Autowired
+    private PedidoService pedidoService;
 
     @Transactional
     public boolean createItemPedido(ItemPedido itemPedido) {
@@ -52,6 +56,16 @@ public class ItemPedidoService {
     @Transactional
     public boolean deleteItemPedido(int id) {
         if (itemPedidoRepository.existsById(id)) {
+            List<Pedido> listaPedidos = pedidoService.getAllPedidos();
+            ItemPedido itemPedido = itemPedidoRepository.findById(id).get();
+
+            for (Pedido pedido : listaPedidos) {
+                if (pedido.getItems().contains(itemPedido)) {
+                    pedido.getItems().remove(itemPedido);
+                    pedidoService.updatePedido(pedido);
+                }
+            }
+
             itemPedidoRepository.deleteById(id);
 
             return true;

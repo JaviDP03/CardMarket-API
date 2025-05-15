@@ -10,11 +10,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @NoArgsConstructor
 @Getter
 @Setter
-public class Actor extends DomainEntity {
+public abstract class Actor extends DomainEntity {
 
     @NotBlank
     private String nombreUsuario;
