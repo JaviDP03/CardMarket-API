@@ -3,6 +3,7 @@ package com.daw.cardmarket.controller;
 import com.daw.cardmarket.model.Valoracion;
 import com.daw.cardmarket.service.ValoracionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +16,7 @@ public class ValoracionController {
 
     @PostMapping
     public ResponseEntity<Boolean> createValoracion(Valoracion valoracion) {
-        return ResponseEntity.ok(valoracionService.createValoracion(valoracion));
+        return ResponseEntity.status(HttpStatus.CREATED).body(valoracionService.createValoracion(valoracion));
     }
 
     @GetMapping("/{id}")

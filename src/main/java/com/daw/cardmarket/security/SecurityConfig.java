@@ -36,18 +36,12 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth ->
-                        auth.anyRequest().permitAll()
+                        auth.
+                                anyRequest().permitAll()
                 );
 
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
-    }
-
-    @Bean
-    UserDetailsService emptyDetailsService() {
-        return username -> {
-            throw new UsernameNotFoundException("No se permiten usuarios locales, sólo JWTs");
-        };
     }
 }

@@ -3,6 +3,7 @@ package com.daw.cardmarket.controller;
 import com.daw.cardmarket.model.ItemPedido;
 import com.daw.cardmarket.service.ItemPedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +18,7 @@ public class ItemPedidoController {
 
     @PostMapping
     public ResponseEntity<Boolean> createItemPedido(@RequestBody com.daw.cardmarket.model.ItemPedido itemPedido) {
-        return ResponseEntity.ok(itemPedidoService.createItemPedido(itemPedido));
+        return ResponseEntity.status(HttpStatus.CREATED).body(itemPedidoService.createItemPedido(itemPedido));
     }
 
     @PostMapping("/editar")

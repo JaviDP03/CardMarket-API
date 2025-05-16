@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+// URL: http://localhost:8080/swagger-ui/index.html
 public class SwaggerConfig {
 
     @Bean

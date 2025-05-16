@@ -15,6 +15,7 @@ import io.micrometer.common.util.StringUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
@@ -41,7 +42,9 @@ public class JwtUtils {
     private static final String jwtSecret = "miSuperClaveSecretaParaJWT123456789";
     private static final int jwtExpirationMs = 86400000; // 1 día en milisegundos
 
-    public static Token generateToken(String usuario) {
+    public static Token generateToken(Authentication authentication) {
+        String usuario = authentication.getName();
+        String rol = authentication.getAuthorities().iterator().next().getAuthority();
         Key key = Keys.hmacShaKeyFor(jwtSecret.getBytes());
         Date fechaExpiracion = new Date(new Date().getTime() + jwtExpirationMs);
 
@@ -49,6 +52,7 @@ public class JwtUtils {
                 .subject(usuario)
                 .issuedAt(new Date())
                 .expiration(fechaExpiracion)
+                .claim("rol", rol)
                 .signWith(key)
                 .compact();
 

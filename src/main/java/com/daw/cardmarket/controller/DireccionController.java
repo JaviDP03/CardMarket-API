@@ -3,6 +3,7 @@ package com.daw.cardmarket.controller;
 import com.daw.cardmarket.model.Direccion;
 import com.daw.cardmarket.service.DireccionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +18,7 @@ public class DireccionController {
 
     @PostMapping
     public ResponseEntity<Boolean> createDireccion(@RequestBody Direccion direccion) {
-        return ResponseEntity.ok(direccionService.createDireccion(direccion));
+        return ResponseEntity.status(HttpStatus.CREATED).body(direccionService.createDireccion(direccion));
     }
 
     @PostMapping("/editar")

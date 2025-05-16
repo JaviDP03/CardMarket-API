@@ -3,6 +3,7 @@ package com.daw.cardmarket.controller;
 import com.daw.cardmarket.model.Usuario;
 import com.daw.cardmarket.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +18,7 @@ public class UsuarioController {
 
     @PostMapping
     public ResponseEntity<Boolean> createUsuario(Usuario usuario) {
-        return ResponseEntity.ok(usuarioService.createUsuario(usuario));
+        return ResponseEntity.status(HttpStatus.CREATED).body(usuarioService.createUsuario(usuario));
     }
 
     @PostMapping("/editar")

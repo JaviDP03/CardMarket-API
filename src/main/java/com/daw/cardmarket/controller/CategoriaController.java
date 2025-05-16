@@ -3,6 +3,7 @@ package com.daw.cardmarket.controller;
 import com.daw.cardmarket.model.Categoria;
 import com.daw.cardmarket.service.CategoriaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +18,7 @@ public class CategoriaController {
 
     @PostMapping
     public ResponseEntity<Boolean> createCategoria(@RequestBody Categoria categoria) {
-        return ResponseEntity.ok(categoriaService.createCategoria(categoria));
+        return ResponseEntity.status(HttpStatus.CREATED).body(categoriaService.createCategoria(categoria));
     }
 
     @PostMapping("/update")

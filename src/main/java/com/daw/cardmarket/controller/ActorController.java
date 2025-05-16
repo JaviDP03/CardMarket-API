@@ -7,10 +7,10 @@ import com.daw.cardmarket.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class ActorController {
@@ -25,14 +25,14 @@ public class ActorController {
     private AuthenticationManager authenticationManager;
 
     @PostMapping("/login")
-    public ResponseEntity<Token> login(Login login) {
+    public ResponseEntity<Token> login(@RequestBody Login login) {
         String username = login.getUsername();
         String password = login.getPassword();
 
-        //Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-        //SecurityContextHolder.getContext().setAuthentication(authentication);
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        Token token = jwtUtils.generateToken(username);
+        Token token = jwtUtils.generateToken(authentication);
 
         return ResponseEntity.ok(token);
     }

@@ -25,7 +25,6 @@ public abstract class Actor extends DomainEntity {
     @NotBlank
     private String nombre;
 
-    @NotBlank
     private String apellido;
 
     @NotBlank

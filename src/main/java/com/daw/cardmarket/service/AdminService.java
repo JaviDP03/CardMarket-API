@@ -76,4 +76,22 @@ public class AdminService {
 
         return false;
     }
+
+    public void createDefaultAdmin() {
+        if (getAllAdmins().isEmpty()) {
+            System.out.println("No existe ningún Administrador!!");
+            System.out.println("Creando Administrador por defecto...");
+            Admin admin = new Admin();
+            admin.setNombreUsuario("admin");
+            admin.setContrasenna(passwordEncoder.encode("admin"));
+            admin.setNombre("Admin");
+            admin.setEmail("admin@cardmarket.com");
+            admin.setRol(Roles.ADMIN);
+            adminRepository.save(admin);
+
+            System.out.println("Creado Administrador (admin)");
+        } else {
+            System.out.println("Ya existe un Administrador");
+        }
+    }
 }

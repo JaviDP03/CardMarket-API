@@ -3,6 +3,7 @@ package com.daw.cardmarket.controller;
 import com.daw.cardmarket.model.Admin;
 import com.daw.cardmarket.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +16,7 @@ public class AdminController {
 
     @PostMapping
     public ResponseEntity<Boolean> createAdmin(@RequestBody Admin admin) {
-        return ResponseEntity.ok(adminService.createAdmin(admin));
+        return ResponseEntity.status(HttpStatus.CREATED).body(adminService.createAdmin(admin));
     }
 
     @PostMapping("/editar")

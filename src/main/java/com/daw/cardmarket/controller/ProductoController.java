@@ -5,6 +5,7 @@ import com.daw.cardmarket.model.Valoracion;
 import com.daw.cardmarket.service.ProductoService;
 import com.daw.cardmarket.service.ValoracionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +23,7 @@ public class ProductoController {
 
     @PostMapping
     public ResponseEntity<Boolean> createProducto(@RequestBody Producto producto) {
-        return ResponseEntity.ok(productoService.createProducto(producto));
+        return ResponseEntity.status(HttpStatus.CREATED).body(productoService.createProducto(producto));
     }
 
     @PostMapping("/editar")
