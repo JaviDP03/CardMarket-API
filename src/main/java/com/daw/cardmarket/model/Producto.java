@@ -3,6 +3,7 @@ package com.daw.cardmarket.model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,7 +24,7 @@ public class Producto extends DomainEntity {
     @NotBlank
     private String descripcion;
 
-    @NotBlank
+    @Min(0)
     private double precio;
 
     @NotBlank

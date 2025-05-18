@@ -30,7 +30,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         String token = JwtUtils.getToken(request);
-        if (StringUtils.hasText(token) && JwtUtils.validateToken(token)) {
+        if (token != null && JwtUtils.validateToken(token)) {
             String username = JwtUtils.getUsernameFromToken(token);
             UserDetails userDetails = actorService.loadUserByUsername(username);
 

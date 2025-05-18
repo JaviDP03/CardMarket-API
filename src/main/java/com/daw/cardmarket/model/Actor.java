@@ -1,5 +1,6 @@
 package com.daw.cardmarket.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
@@ -16,7 +17,7 @@ import lombok.Setter;
 @Setter
 public abstract class Actor extends DomainEntity {
 
-    @NotBlank
+    @Column(unique=true)
     private String nombreUsuario;
 
     @NotBlank
@@ -27,7 +28,7 @@ public abstract class Actor extends DomainEntity {
 
     private String apellido;
 
-    @NotBlank
+    @Column(unique=true)
     @Email
     private String email;
 
