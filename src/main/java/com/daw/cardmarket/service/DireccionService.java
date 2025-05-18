@@ -27,8 +27,8 @@ public class DireccionService {
     }
 
     @Transactional
-    public boolean updateDireccion(Direccion direccionU) {
-        Optional<Direccion> direccionO = direccionRepository.findById(direccionU.getId());
+    public boolean updateDireccion(int id, Direccion direccionU) {
+        Optional<Direccion> direccionO = direccionRepository.findById(id);
 
         if (direccionO.isPresent()) {
             Direccion direccion = direccionO.get();
@@ -66,7 +66,7 @@ public class DireccionService {
             for (Pedido pedido : listaPedidos) {
                 if (pedido.getDireccion() == direccion) {
                     pedido.setDireccion(null);
-                    pedidoService.updatePedido(pedido);
+                    pedidoService.updatePedido(pedido.getId(), pedido);
                 }
             }
 

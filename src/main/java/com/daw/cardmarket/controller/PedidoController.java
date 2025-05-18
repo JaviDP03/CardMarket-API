@@ -21,9 +21,9 @@ public class PedidoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(pedidoService.createPedido(pedido));
     }
 
-    @PostMapping("/editar")
-    public ResponseEntity<Boolean> updatePedido(@RequestBody Pedido pedido) {
-        return ResponseEntity.ok(pedidoService.updatePedido(pedido));
+    @PostMapping("{id}/editar")
+    public ResponseEntity<Boolean> updatePedido(@PathVariable int id, @RequestBody Pedido pedido) {
+        return ResponseEntity.ok(pedidoService.updatePedido(id, pedido));
     }
 
     @GetMapping

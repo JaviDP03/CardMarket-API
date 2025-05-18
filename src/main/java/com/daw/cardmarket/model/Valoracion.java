@@ -1,10 +1,12 @@
 package com.daw.cardmarket.model;
 
 import jakarta.persistence.Entity;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.util.Date;
 
@@ -14,12 +16,12 @@ import java.util.Date;
 @Setter
 public class Valoracion extends DomainEntity {
 
-    @NotBlank
+    @Min(0)
     private int puntuacion;
 
     @NotBlank
     private String comentario;
 
-    @NotBlank
+    @CreationTimestamp
     private Date fechaPublicacion;
 }

@@ -27,7 +27,7 @@ public class Producto extends DomainEntity {
     @Min(0)
     private double precio;
 
-    @NotBlank
+    @Min(0)
     private int stock;
 
     @NotBlank

@@ -23,8 +23,8 @@ public class CategoriaService {
     }
 
     @Transactional
-    public boolean updateCategoria(Categoria categoriaU) {
-        Optional<Categoria> categoriaO = categoriaRepository.findById(categoriaU.getId());
+    public boolean updateCategoria(int id, Categoria categoriaU) {
+        Optional<Categoria> categoriaO = categoriaRepository.findById(id);
 
         if (categoriaO.isPresent()) {
             Categoria categoria = categoriaO.get();

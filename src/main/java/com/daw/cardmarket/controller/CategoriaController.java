@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/categoria")
+@RequestMapping("/categorias")
 public class CategoriaController {
 
     @Autowired
@@ -21,9 +21,9 @@ public class CategoriaController {
         return ResponseEntity.status(HttpStatus.CREATED).body(categoriaService.createCategoria(categoria));
     }
 
-    @PostMapping("/update")
-    public ResponseEntity<Boolean> updateCategoria(@RequestBody Categoria categoria) {
-        return ResponseEntity.ok(categoriaService.updateCategoria(categoria));
+    @PostMapping("/{id}/editar")
+    public ResponseEntity<Boolean> updateCategoria(@PathVariable int id, @RequestBody Categoria categoria) {
+        return ResponseEntity.ok(categoriaService.updateCategoria(id, categoria));
     }
 
     @GetMapping

@@ -23,8 +23,8 @@ public class ProductoService {
     }
 
     @Transactional
-    public boolean updateProducto(Producto productoU) {
-        Optional<Producto> productoO = productoRepository.findById(productoU.getId());
+    public boolean updateProducto(int id, Producto productoU) {
+        Optional<Producto> productoO = productoRepository.findById(id);
 
         if (productoO.isPresent()) {
             Producto producto = productoO.get();

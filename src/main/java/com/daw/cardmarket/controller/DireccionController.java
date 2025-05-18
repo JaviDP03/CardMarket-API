@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/direccion")
+@RequestMapping("/direcciones")
 public class DireccionController {
 
     @Autowired
@@ -21,9 +21,9 @@ public class DireccionController {
         return ResponseEntity.status(HttpStatus.CREATED).body(direccionService.createDireccion(direccion));
     }
 
-    @PostMapping("/editar")
-    public ResponseEntity<Boolean> updateDireccion(@RequestBody Direccion direccion) {
-        return ResponseEntity.ok(direccionService.updateDireccion(direccion));
+    @PostMapping("{id}/editar")
+    public ResponseEntity<Boolean> updateDireccion(@PathVariable int id, @RequestBody Direccion direccion) {
+        return ResponseEntity.ok(direccionService.updateDireccion(id, direccion));
     }
 
     @GetMapping

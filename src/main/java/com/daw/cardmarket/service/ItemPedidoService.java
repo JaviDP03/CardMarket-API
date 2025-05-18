@@ -62,7 +62,7 @@ public class ItemPedidoService {
             for (Pedido pedido : listaPedidos) {
                 if (pedido.getItems().contains(itemPedido)) {
                     pedido.getItems().remove(itemPedido);
-                    pedidoService.updatePedido(pedido);
+                    pedidoService.updatePedido(pedido.getId(), pedido);
                 }
             }
 

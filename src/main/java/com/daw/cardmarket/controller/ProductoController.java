@@ -26,9 +26,9 @@ public class ProductoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(productoService.createProducto(producto));
     }
 
-    @PostMapping("/editar")
-    public ResponseEntity<Boolean> updateProducto(@RequestBody Producto producto) {
-        return ResponseEntity.ok(productoService.updateProducto(producto));
+    @PostMapping("{id}/editar")
+    public ResponseEntity<Boolean> updateProducto(@PathVariable int id, @RequestBody Producto producto) {
+        return ResponseEntity.ok(productoService.updateProducto(id, producto));
     }
 
     @GetMapping
