@@ -1,7 +1,10 @@
 package com.daw.cardmarket.model;
 
 import jakarta.persistence.Entity;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
+import jakarta.validation.constraints.Min;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,12 +15,17 @@ import lombok.Setter;
 @Setter
 public class ItemPedido extends DomainEntity {
 
-    @NotBlank
-    private String nombre;
+    @ManyToOne
+    private Producto producto;
 
-    @NotBlank
+    @Min(0)
     private int cantidad;
 
-    @NotBlank
-    private double precioUnitario;
+    private double total;
+
+    @PrePersist
+    @PreUpdate
+    private void calcularTotal() {
+        this.total = this.producto.getPrecio() * this.cantidad;
+    }
 }

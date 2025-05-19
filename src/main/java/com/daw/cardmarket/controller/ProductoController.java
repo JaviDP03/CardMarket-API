@@ -1,7 +1,6 @@
 package com.daw.cardmarket.controller;
 
 import com.daw.cardmarket.model.Producto;
-import com.daw.cardmarket.model.Valoracion;
 import com.daw.cardmarket.service.ProductoService;
 import com.daw.cardmarket.service.ValoracionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,10 +43,5 @@ public class ProductoController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> deleteProducto(@PathVariable int id) {
         return ResponseEntity.ok(productoService.deleteProducto(id));
-    }
-
-    @GetMapping("/{idProducto}/valoraciones")
-    public ResponseEntity<List<Valoracion>> getValoracionesByProducto(@PathVariable int idProducto) {
-        return ResponseEntity.ok(valoracionService.getValoracionesByProducto(idProducto));
     }
 }

@@ -26,6 +26,4 @@ public class Direccion extends DomainEntity {
 
     @NotBlank
     private String pais;
-
-    private boolean esPrincipal;
 }

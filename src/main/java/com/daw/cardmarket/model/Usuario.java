@@ -2,7 +2,6 @@ package com.daw.cardmarket.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,7 +19,6 @@ public class Usuario extends Actor {
     @Pattern(regexp = "^([6789]\\d{8})?$")
     private String telefono;
 
-    @NotBlank
     private Date fechaNacimiento;
 
     @OneToMany

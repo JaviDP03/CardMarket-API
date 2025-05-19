@@ -1,8 +1,10 @@
 package com.daw.cardmarket.service;
 
 import com.daw.cardmarket.model.Pedido;
+import com.daw.cardmarket.model.Usuario;
 import com.daw.cardmarket.repository.DireccionRepository;
 import com.daw.cardmarket.repository.PedidoRepository;
+import com.daw.cardmarket.utils.JwtUtils;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,10 +21,24 @@ public class PedidoService {
     @Autowired
     private DireccionRepository direccionRepository;
 
+    @Autowired
+    private UsuarioService usuarioService;
+
+    @Autowired
+    private JwtUtils jwtUtils;
+
     @Transactional
     public boolean createPedido(Pedido pedido) {
+        Usuario usuario = jwtUtils.userLogin();
+
+        if (usuario == null) {
+            return false;
+        }
+
         Pedido pedidoC = pedidoRepository.save(pedido);
-        direccionRepository.save(pedido.getDireccion());
+        direccionRepository.save(pedidoC.getDireccion());
+        usuario.getPedidos().add(pedidoC);
+        usuarioService.updateUsuario(usuario);
 
         return pedidoC.getId() != null;
     }
@@ -35,7 +51,6 @@ public class PedidoService {
             Pedido pedido = pedidoO.get();
 
             pedido.setTotal(pedidoU.getTotal());
-            pedido.setFechaCreacion(pedidoU.getFechaCreacion());
             pedido.setDireccion(pedidoU.getDireccion());
             pedido.setItems(pedidoU.getItems());
 

@@ -17,12 +17,12 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
     @PostMapping
-    public ResponseEntity<Boolean> createUsuario(Usuario usuario) {
+    public ResponseEntity<Boolean> createUsuario(@RequestBody Usuario usuario) {
         return ResponseEntity.status(HttpStatus.CREATED).body(usuarioService.createUsuario(usuario));
     }
 
     @PostMapping("/editar")
-    public ResponseEntity<Boolean> updateUsuario(Usuario usuario) {
+    public ResponseEntity<Boolean> updateUsuario(@RequestBody Usuario usuario) {
         return ResponseEntity.ok(usuarioService.updateUsuario(usuario));
     }
 
@@ -32,8 +32,8 @@ public class UsuarioController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Usuario> getUsuarioById(int id) {
-        return ResponseEntity.ok(usuarioService.getUsuarioById(id).get());
+    public ResponseEntity<Usuario> getUsuarioById(@PathVariable int id) {
+        return ResponseEntity.ok(usuarioService.getUsuarioById(id).orElse(null));
     }
 
     @DeleteMapping("/{id}")

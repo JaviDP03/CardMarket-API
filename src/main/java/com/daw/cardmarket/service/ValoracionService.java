@@ -1,5 +1,6 @@
 package com.daw.cardmarket.service;
 
+import com.daw.cardmarket.model.Producto;
 import com.daw.cardmarket.model.Valoracion;
 import com.daw.cardmarket.repository.ValoracionRepository;
 import jakarta.transaction.Transactional;
@@ -15,9 +16,18 @@ public class ValoracionService {
     @Autowired
     private ValoracionRepository valoracionRepository;
 
+    @Autowired
+    private ProductoService productoService;
+
     @Transactional
-    public boolean createValoracion(Valoracion valoracion) {
+    public boolean createValoracion(Valoracion valoracion, int idProducto) {
         Valoracion valoracionC = valoracionRepository.save(valoracion);
+        Producto producto = productoService.getProductoById(idProducto).orElse(null);
+
+        if (producto != null) {
+            producto.getValoraciones().add(valoracionC);
+            productoService.updateProducto(idProducto, producto);
+        }
 
         return valoracionC.getId() != null;
     }
@@ -31,8 +41,15 @@ public class ValoracionService {
     }
 
     @Transactional
-    public boolean deleteValoracion(int id) {
+    public boolean deleteValoracion(int id, int idProducto) {
         if (valoracionRepository.existsById(id)) {
+            Producto producto = productoService.getProductoById(idProducto).orElse(null);
+
+            if (producto != null) {
+                producto.getValoraciones().remove(getValoracionById(id).orElse(null));
+                productoService.updateProducto(idProducto, producto);
+            }
+
             valoracionRepository.deleteById(id);
 
             return true;

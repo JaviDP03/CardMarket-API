@@ -57,7 +57,13 @@ public class AdminService {
     }
 
     public Optional<Admin> getAdminById(int id) {
-        return adminRepository.findById(id);
+        Admin admin = adminRepository.findById(id).orElse(null);
+
+        if (admin != null) {
+            admin.setContrasenna(null);
+        }
+
+        return Optional.ofNullable(admin);
     }
 
     public Optional<Admin> findByUsername(String username) {

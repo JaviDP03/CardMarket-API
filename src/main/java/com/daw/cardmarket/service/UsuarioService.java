@@ -60,7 +60,13 @@ public class UsuarioService {
     }
 
     public Optional<Usuario> getUsuarioById(int id) {
-        return usuarioRepository.findById(id);
+        Usuario usuario = usuarioRepository.findById(id).orElse(null);
+
+        if (usuario != null) {
+            usuario.setContrasenna(null);
+        }
+
+        return Optional.ofNullable(usuario);
     }
 
     public Optional<Usuario> findByUsername(String username) {

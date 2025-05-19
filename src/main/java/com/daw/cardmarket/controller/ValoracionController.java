@@ -7,25 +7,31 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/valoraciones")
 public class ValoracionController {
 
     @Autowired
     private ValoracionService valoracionService;
 
-    @PostMapping
-    public ResponseEntity<Boolean> createValoracion(Valoracion valoracion) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(valoracionService.createValoracion(valoracion));
+    @PostMapping("/productos/{idProducto}/valoraciones")
+    public ResponseEntity<Boolean> createValoracion(@RequestBody Valoracion valoracion, @PathVariable int idProducto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(valoracionService.createValoracion(valoracion, idProducto));
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/productos/{idProducto}/valoraciones")
+    public ResponseEntity<List<Valoracion>> getValoracionesByProducto(@PathVariable int idProducto) {
+        return ResponseEntity.ok(valoracionService.getValoracionesByProducto(idProducto));
+    }
+
+    @GetMapping("/valoraciones/{id}")
     public ResponseEntity<Valoracion> getValoracionById(@PathVariable int id) {
         return ResponseEntity.ok(valoracionService.getValoracionById(id).orElse(null));
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Boolean> deleteValoracion(@PathVariable int id) {
-        return ResponseEntity.ok(valoracionService.deleteValoracion(id));
+    @DeleteMapping("/productos/{idProducto}/valoraciones/{id}")
+    public ResponseEntity<Boolean> deleteValoracion(@PathVariable int id, @PathVariable int idProducto) {
+        return ResponseEntity.ok(valoracionService.deleteValoracion(id, idProducto));
     }
 }

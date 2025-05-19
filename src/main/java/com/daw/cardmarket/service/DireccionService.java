@@ -2,7 +2,9 @@ package com.daw.cardmarket.service;
 
 import com.daw.cardmarket.model.Direccion;
 import com.daw.cardmarket.model.Pedido;
+import com.daw.cardmarket.model.Usuario;
 import com.daw.cardmarket.repository.DireccionRepository;
+import com.daw.cardmarket.utils.JwtUtils;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,9 +21,27 @@ public class DireccionService {
     @Autowired
     private PedidoService pedidoService;
 
+    @Autowired
+    private UsuarioService usuarioService;
+
+    @Autowired
+    private JwtUtils jwtUtils;
+
     @Transactional
     public boolean createDireccion(Direccion direccion) {
-        Direccion direccionC = direccionRepository.save(direccion);
+        Usuario usuario = jwtUtils.userLogin();
+        if (usuario == null) {
+            return false;
+        }
+
+        Direccion direccionC = direccion;
+
+        if (!getAllDirecciones().contains(direccionC)) {
+            direccionC = direccionRepository.save(direccion);
+        }
+        usuario.getDirecciones().add(direccionC);
+        usuarioService.updateUsuario(usuario);
+
 
         return direccionC.getId() != null;
     }
@@ -38,7 +58,6 @@ public class DireccionService {
             direccion.setCiudad(direccionU.getCiudad());
             direccion.setProvincia(direccionU.getProvincia());
             direccion.setPais(direccionU.getPais());
-            direccion.setEsPrincipal(direccionU.isEsPrincipal());
 
             direccionRepository.save(direccion);
 
@@ -58,20 +77,29 @@ public class DireccionService {
 
     @Transactional
     public boolean deleteDireccion(int id) {
+        Usuario usuario = jwtUtils.userLogin();
+        if (usuario == null) {
+            return false;
+        }
 
         if (direccionRepository.existsById(id)) {
+            boolean estaEnPedido = false;
             List<Pedido> listaPedidos = pedidoService.getAllPedidos();
-            Direccion direccion = direccionRepository.findById(id).get();
+            Direccion direccion = direccionRepository.findById(id).orElse(null);
 
             for (Pedido pedido : listaPedidos) {
                 if (pedido.getDireccion() == direccion) {
-                    pedido.setDireccion(null);
-                    pedidoService.updatePedido(pedido.getId(), pedido);
+                    estaEnPedido = true;
+                    break;
                 }
             }
 
-            direccionRepository.deleteById(id);
-            
+            usuario.getDirecciones().remove(direccion);
+            usuarioService.updateUsuario(usuario);
+            if (!estaEnPedido) {
+                direccionRepository.deleteById(id);
+            }
+
             return true;
         }
 
