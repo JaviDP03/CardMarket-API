@@ -33,7 +33,7 @@ public class CategoriaController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Categoria> getCategoriaById(@PathVariable int id) {
-        return ResponseEntity.ok(categoriaService.getCategoriaById(id).get());
+        return ResponseEntity.ok(categoriaService.getCategoriaById(id).orElse(null));
     }
 
     @DeleteMapping("/{id}")

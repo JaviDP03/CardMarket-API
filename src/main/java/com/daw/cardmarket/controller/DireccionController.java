@@ -33,7 +33,7 @@ public class DireccionController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Direccion> getDireccionById(@PathVariable int id) {
-        return ResponseEntity.ok(direccionService.getDireccionById(id).get());
+        return ResponseEntity.ok(direccionService.getDireccionById(id).orElse(null));
     }
 
     @DeleteMapping("/{id}")

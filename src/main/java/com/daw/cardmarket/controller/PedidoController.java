@@ -33,7 +33,7 @@ public class PedidoController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Pedido> getPedidoById(@PathVariable int id) {
-        return ResponseEntity.ok(pedidoService.getPedidoById(id).get());
+        return ResponseEntity.ok(pedidoService.getPedidoById(id).orElse(null));
     }
 
     @DeleteMapping("/{id}")
