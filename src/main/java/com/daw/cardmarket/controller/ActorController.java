@@ -1,5 +1,6 @@
 package com.daw.cardmarket.controller;
 
+import com.daw.cardmarket.model.Actor;
 import com.daw.cardmarket.model.Login;
 import com.daw.cardmarket.model.Token;
 import com.daw.cardmarket.service.ActorService;
@@ -37,9 +38,19 @@ public class ActorController {
         return ResponseEntity.ok(token);
     }
 
+    @GetMapping("/userLogin")
+    public ResponseEntity<Actor> userLogin() {
+        Actor actor = jwtUtils.userLogin();
+
+        if (actor == null) {
+            return ResponseEntity.status(401).build();
+        }
+
+        return ResponseEntity.ok(actor);
+    }
+
     @GetMapping("/actor/{username}")
     public ResponseEntity<?> findByUsername(@PathVariable String username) {
         return ResponseEntity.ok(actorService.findByUsername(username));
     }
-
 }

@@ -42,10 +42,13 @@ public class UsuarioService {
             usuario.setNombre(usuarioU.getNombre());
             usuario.setApellido(usuarioU.getApellido());
             usuario.setEmail(usuarioU.getEmail());
-            usuario.setContrasenna(passwordEncoder.encode(usuarioU.getContrasenna()));
             usuario.setTelefono(usuarioU.getTelefono());
             usuario.setFechaNacimiento(usuarioU.getFechaNacimiento());
             usuario.setDirecciones(usuarioU.getDirecciones());
+
+            if (usuarioU.getContrasenna() != null && !usuarioU.getContrasenna().isEmpty()) {
+                usuario.setContrasenna(passwordEncoder.encode(usuarioU.getContrasenna()));
+            }
 
             usuarioRepository.save(usuario);
 

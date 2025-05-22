@@ -1,5 +1,6 @@
 package com.daw.cardmarket.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.Pattern;
@@ -24,6 +25,6 @@ public class Usuario extends Actor {
     @OneToMany
     private List<Pedido> pedidos;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Direccion> direcciones;
 }
