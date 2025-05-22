@@ -9,6 +9,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.URL;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -31,6 +32,9 @@ public abstract class Actor extends DomainEntity {
     @Column(unique=true)
     @Email
     private String email;
+
+    @URL
+    private String urlImagen;
 
     private Roles rol;
 }
