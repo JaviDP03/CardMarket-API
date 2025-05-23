@@ -6,6 +6,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,6 +51,19 @@ public class ProductoService {
 
     public Optional<Producto> getProductoById(int id) {
         return productoRepository.findById(id);
+    }
+
+    public List<Producto> getProductoByCategoria(int idCategoria) {
+        List<Producto> productos = getAllProductos();
+        List<Producto> productosCategoria = new ArrayList<>();
+
+        for (Producto producto : productos) {
+            if (producto.getCategoria().getId() == idCategoria) {
+                productosCategoria.add(producto);
+            }
+        }
+
+        return productosCategoria;
     }
 
     public boolean deleteProducto(int id) {
