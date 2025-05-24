@@ -40,9 +40,9 @@ public class ProductoController {
         return ResponseEntity.ok(productoService.getProductoById(id).get());
     }
 
-    @GetMapping("{idCategoria}")
+    @GetMapping("/categoria/{idCategoria}")
     public ResponseEntity<List<Producto>> getProductoByCategoria(@PathVariable int idCategoria) {
-        return ResponseEntity.ok(productoService.getProductoByCategoria(idCategoria));
+        return ResponseEntity.ok(productoService.getProductosByCategoria(idCategoria));
     }
 
     @DeleteMapping("/{id}")

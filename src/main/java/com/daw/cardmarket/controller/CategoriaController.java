@@ -36,6 +36,11 @@ public class CategoriaController {
         return ResponseEntity.ok(categoriaService.getCategoriaById(id).orElse(null));
     }
 
+    @GetMapping("/nombre/{nombre}")
+    public ResponseEntity<Categoria> getCategoriaByNombre(@PathVariable String nombre) {
+        return ResponseEntity.ok(categoriaService.getCategoriaByNombre(nombre).orElse(null));
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> deleteCategoria(@PathVariable int id) {
         return ResponseEntity.ok(categoriaService.deleteCategoria(id));

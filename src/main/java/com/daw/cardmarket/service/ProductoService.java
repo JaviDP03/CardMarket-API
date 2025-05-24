@@ -53,7 +53,7 @@ public class ProductoService {
         return productoRepository.findById(id);
     }
 
-    public List<Producto> getProductoByCategoria(int idCategoria) {
+    public List<Producto> getProductosByCategoria(int idCategoria) {
         List<Producto> productos = getAllProductos();
         List<Producto> productosCategoria = new ArrayList<>();
 

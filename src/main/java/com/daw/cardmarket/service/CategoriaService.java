@@ -48,6 +48,18 @@ public class CategoriaService {
         return categoriaRepository.findById(id);
     }
 
+    public Optional<Categoria> getCategoriaByNombre(String nombre) {
+        List<Categoria> categorias = getAllCategorias();
+
+        for (Categoria categoria : categorias) {
+            if (categoria.getNombre().equalsIgnoreCase(nombre)) {
+                return Optional.of(categoria);
+            }
+        }
+
+        return Optional.empty();
+    }
+
     @Transactional
     public boolean deleteCategoria(int id) {
         if (categoriaRepository.existsById(id)) {
