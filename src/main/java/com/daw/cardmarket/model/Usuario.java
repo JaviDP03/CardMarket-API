@@ -27,4 +27,7 @@ public class Usuario extends Actor {
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<Direccion> direcciones;
+
+    @OneToMany
+    private List<Valoracion> valoraciones;
 }

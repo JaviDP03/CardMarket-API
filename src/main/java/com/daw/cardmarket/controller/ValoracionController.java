@@ -1,5 +1,6 @@
 package com.daw.cardmarket.controller;
 
+import com.daw.cardmarket.model.Usuario;
 import com.daw.cardmarket.model.Valoracion;
 import com.daw.cardmarket.service.ValoracionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +26,19 @@ public class ValoracionController {
         return ResponseEntity.ok(valoracionService.getValoracionesByProducto(idProducto));
     }
 
+    @GetMapping("/valoraciones/usuario")
+    public ResponseEntity<List<Valoracion>> getValoracionesByUsuario() {
+        return ResponseEntity.ok(valoracionService.getValoracionesByUsuario());
+    }
+
     @GetMapping("/valoraciones/{id}")
     public ResponseEntity<Valoracion> getValoracionById(@PathVariable int id) {
         return ResponseEntity.ok(valoracionService.getValoracionById(id).orElse(null));
+    }
+
+    @GetMapping("/valoraciones/{id}/usuario")
+    public ResponseEntity<Usuario> getUsuarioByValoracion(@PathVariable int id) {
+        return ResponseEntity.ok(valoracionService.getUsuarioByValoracion(id).orElse(null));
     }
 
     @DeleteMapping("/productos/{idProducto}/valoraciones/{id}")
