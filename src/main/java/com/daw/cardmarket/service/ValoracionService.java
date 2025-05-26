@@ -30,12 +30,18 @@ public class ValoracionService {
 
     @Transactional
     public boolean createValoracion(Valoracion valoracion, int idProducto) {
+        Usuario usuario = jwtUtils.userLogin();
         Valoracion valoracionC = valoracionRepository.save(valoracion);
         Producto producto = productoService.getProductoById(idProducto).orElse(null);
 
         if (producto != null) {
             producto.getValoraciones().add(valoracionC);
             productoService.updateProducto(idProducto, producto);
+        }
+
+        if (usuario != null) {
+            usuario.getValoraciones().add(valoracionC);
+            usuarioService.updateUsuario(usuario);
         }
 
         return valoracionC.getId() != null;
