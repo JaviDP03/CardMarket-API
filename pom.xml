@@ -123,6 +123,34 @@
                 </configuration>
             </plugin>
             <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.5.0</version>
+                <executions>
+                    <execution>
+                        <id>backup-mysql</id>
+                        <phase>none</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>mysqldump</executable>
+                            <arguments>
+                                <argument>--user=proyecto</argument>
+                                <argument>--password=admin</argument>
+                                <argument>--host=localhost</argument>
+                                <argument>--databases</argument>
+                                <argument>--no-data</argument>
+                                <argument>cardmarket</argument>
+                                <argument>--result-file=cardmarket.sql</argument>
+                                <argument>--routines</argument>
+                                <argument>--events</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.owasp</groupId>
                 <artifactId>dependency-check-maven</artifactId>
                 <version>12.1.1</version>
