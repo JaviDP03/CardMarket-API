@@ -36,6 +36,11 @@ public class PedidoController {
         return ResponseEntity.ok(pedidoService.getPedidoById(id).orElse(null));
     }
 
+    @GetMapping("/usuario")
+    public ResponseEntity<List<Pedido>> getPedidosByUsuario() {
+        return ResponseEntity.ok(pedidoService.getPedidosByUsuario());
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> deletePedido(@PathVariable int id) {
         return ResponseEntity.ok(pedidoService.deletePedido(id));

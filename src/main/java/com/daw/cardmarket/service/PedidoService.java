@@ -1,6 +1,8 @@
 package com.daw.cardmarket.service;
 
+import com.daw.cardmarket.model.ItemPedido;
 import com.daw.cardmarket.model.Pedido;
+import com.daw.cardmarket.model.Producto;
 import com.daw.cardmarket.model.Usuario;
 import com.daw.cardmarket.repository.DireccionRepository;
 import com.daw.cardmarket.repository.PedidoRepository;
@@ -25,14 +27,29 @@ public class PedidoService {
     private UsuarioService usuarioService;
 
     @Autowired
+    private ProductoService productoService;
+
+    @Autowired
     private JwtUtils jwtUtils;
 
     @Transactional
     public boolean createPedido(Pedido pedido) {
         Usuario usuario = jwtUtils.userLogin();
+        List<ItemPedido> listaItems = pedido.getItems();
+        Producto tempProducto;
 
         if (usuario == null) {
             return false;
+        }
+
+        for (ItemPedido itemPedido : listaItems) {
+            tempProducto = itemPedido.getProducto();
+            tempProducto.setStock(tempProducto.getStock() - itemPedido.getCantidad());
+            if (tempProducto.getStock() < 0) {
+                return false;
+            }
+
+            productoService.updateProducto(tempProducto.getId(), tempProducto);
         }
 
         Pedido pedidoC = pedidoRepository.save(pedido);
@@ -69,6 +86,16 @@ public class PedidoService {
 
     public Optional<Pedido> getPedidoById(int id) {
         return pedidoRepository.findById(id);
+    }
+
+    public List<Pedido> getPedidosByUsuario() {
+        Usuario usuario = jwtUtils.userLogin();
+
+        if (usuario == null) {
+            return null;
+        }
+
+        return usuario.getPedidos();
     }
 
     @Transactional
