@@ -42,7 +42,7 @@ public class AdminService {
             admin.setNombre(adminU.getNombre());
             admin.setApellido(adminU.getApellido());
             admin.setEmail(adminU.getEmail());
-            admin.setUrlImagen(adminU.getUrlImagen());
+            admin.setImagenB64(adminU.getImagenB64());
 
             if (adminU.getContrasenna() != null && !adminU.getContrasenna().isEmpty()) {
                 admin.setContrasenna(passwordEncoder.encode(adminU.getContrasenna()));

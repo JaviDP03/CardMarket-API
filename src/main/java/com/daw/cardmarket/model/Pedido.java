@@ -1,9 +1,6 @@
 package com.daw.cardmarket.model;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,8 +23,10 @@ public class Pedido extends DomainEntity {
     private Date fechaCreacion;
 
     @ManyToOne
+    @JoinColumn(name = "direccion_id")
     private Direccion direccion;
 
     @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "pedido_id")
     private List<ItemPedido> items;
 }

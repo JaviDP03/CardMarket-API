@@ -42,7 +42,7 @@ public class UsuarioService {
             usuario.setNombre(usuarioU.getNombre());
             usuario.setApellido(usuarioU.getApellido());
             usuario.setEmail(usuarioU.getEmail());
-            usuario.setUrlImagen(usuarioU.getUrlImagen());
+            usuario.setImagenB64(usuarioU.getImagenB64());
             usuario.setTelefono(usuarioU.getTelefono());
             usuario.setFechaNacimiento(usuarioU.getFechaNacimiento());
             usuario.setDirecciones(usuarioU.getDirecciones());

@@ -34,7 +34,7 @@ public class ProductoService {
             producto.setDescripcion(productoU.getDescripcion());
             producto.setPrecio(productoU.getPrecio());
             producto.setStock(productoU.getStock());
-            producto.setUrlImagen(productoU.getUrlImagen());
+            producto.setImagenB64(productoU.getImagenB64());
             producto.setCategoria(productoU.getCategoria());
 
             productoRepository.save(producto);

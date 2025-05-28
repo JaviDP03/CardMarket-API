@@ -2,6 +2,7 @@ package com.daw.cardmarket.model;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
@@ -23,11 +24,14 @@ public class Usuario extends Actor {
     private Date fechaNacimiento;
 
     @OneToMany
+    @JoinColumn(name = "usuario_id")
     private List<Pedido> pedidos;
 
     @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "usuario_id")
     private List<Direccion> direcciones;
 
     @OneToMany
+    @JoinColumn(name = "usuario_id")
     private List<Valoracion> valoraciones;
 }

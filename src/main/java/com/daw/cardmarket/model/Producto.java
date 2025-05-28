@@ -1,14 +1,11 @@
 package com.daw.cardmarket.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.validator.constraints.URL;
 
 import java.util.List;
 
@@ -31,12 +28,14 @@ public class Producto extends DomainEntity {
     private int stock;
 
     @NotBlank
-    @URL
-    private String urlImagen;
+    @Column(length = 1000000)
+    private String imagenB64;
 
     @ManyToOne
+    @JoinColumn(name = "categoria_id")
     private Categoria categoria;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "producto_id")
     private List<Valoracion> valoraciones;
 }
