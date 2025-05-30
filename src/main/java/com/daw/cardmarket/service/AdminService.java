@@ -9,6 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Optional;
 
@@ -104,4 +108,71 @@ public class AdminService {
             System.out.println("Ya existe un Administrador");
         }
     }
+
+    /**
+     * Ejecuta el comando Maven para hacer backup de PostgreSQL y devuelve el archivo generado
+     * @return File del backup SQL generado
+     */
+    public File executePostgresqlBackup() {
+        try {
+            // Determinar el comando según el sistema operativo
+            String command;
+            if (System.getProperty("os.name").toLowerCase().contains("windows")) {
+                command = ".\\mvnw.cmd";
+            } else {
+                command = "./mvnw";
+            }
+
+            ProcessBuilder processBuilder = new ProcessBuilder(
+                command, 
+                "exec:exec@backup-postgresql-sql"
+            );
+
+            // Establecer el directorio de trabajo (raíz del proyecto)
+            File projectDir = new File(System.getProperty("user.dir"));
+            processBuilder.directory(projectDir);
+
+            // Redirigir errores al output estándar
+            processBuilder.redirectErrorStream(true);
+
+            System.out.println("Iniciando backup de PostgreSQL...");
+            Process process = processBuilder.start();
+
+            // Leer la salida del comando para mostrar progreso
+            try (BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(process.getInputStream()))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    System.out.println(line);
+                }
+            }
+
+            // Esperar a que el proceso termine
+            int exitCode = process.waitFor();
+
+            if (exitCode == 0) {
+                System.out.println("Backup de PostgreSQL completado exitosamente");
+
+                // Buscar el archivo generado en la ruta definida en el pom.xml (cardmarket_backup.sql)
+                File backupFile = new File(projectDir, "cardmarket_backup.sql");
+
+                if (backupFile.exists()) {
+                    System.out.println("Archivo de backup encontrado: " + backupFile.getAbsolutePath());
+                    return backupFile;
+                } else {
+                    System.err.println("No se encontró el archivo de backup en la ubicación esperada");
+                    return null;
+                }
+            } else {
+                System.err.println("Error al ejecutar backup. Código de salida: " + exitCode);
+                return null;
+            }
+
+        } catch (IOException | InterruptedException e) {
+            System.err.println("Error al ejecutar el comando de backup: " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 }

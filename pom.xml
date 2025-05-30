@@ -32,6 +32,7 @@
         <java.version>21</java.version>
         <timestamp>${maven.build.timestamp}</timestamp>
         <maven.build.timestamp.format>dd-MM-yyyy HH:mm:ss</maven.build.timestamp.format>
+        <nvd.api.key>fd273bfd-6a0c-443e-a581-316b4738be4a</nvd.api.key>
     </properties>
     <dependencies>
         <dependency>
@@ -127,24 +128,37 @@
                 <version>3.5.0</version>
                 <executions>
                     <execution>
-                        <id>backup-mysql</id>
+                        <id>backup-postgresql</id>
+                        <phase>none</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>backup-postgresql-sql</id>
                         <phase>none</phase>
                         <goals>
                             <goal>exec</goal>
                         </goals>
                         <configuration>
-                            <executable>mysqldump</executable>
+                            <executable>pg_dump</executable>
                             <arguments>
-                                <argument>--user=proyecto</argument>
-                                <argument>--password=admin</argument>
                                 <argument>--host=localhost</argument>
-                                <argument>--databases</argument>
-                                <argument>--no-data</argument>
-                                <argument>cardmarket</argument>
-                                <argument>--result-file=cardmarket.sql</argument>
-                                <argument>--routines</argument>
-                                <argument>--events</argument>
+                                <argument>--port=15432</argument>
+                                <argument>--username=proyecto</argument>
+                                <argument>--dbname=cardmarket</argument>
+                                <argument>--verbose</argument>
+                                <argument>--clean</argument>
+                                <argument>--create</argument>
+                                <argument>--if-exists</argument>
+                                <argument>--blobs</argument>
+                                <argument>--inserts</argument>
+                                <argument>--schema-only</argument>
+                                <argument>--file=cardmarket_backup.sql</argument>
                             </arguments>
+                            <environmentVariables>
+                                <PGPASSWORD>admin</PGPASSWORD>
+                            </environmentVariables>
                         </configuration>
                     </execution>
                 </executions>
@@ -153,13 +167,13 @@
                 <groupId>org.owasp</groupId>
                 <artifactId>dependency-check-maven</artifactId>
                 <version>12.1.1</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
+                <configuration>
+                    <format>ALL</format>
+                    <outputDirectory>target/dependency-check</outputDirectory>
+                    <nvdApiKey>${nvd.api.key}</nvdApiKey>
+                    <nvdMaxRetryCount>10</nvdMaxRetryCount>
+                    <nvdApiDelay>4000</nvdApiDelay>
+                </configuration>
             </plugin>
         </plugins>
     </build>
