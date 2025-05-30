@@ -11,7 +11,7 @@
     <groupId>com.daw</groupId>
     <artifactId>CardMarket</artifactId>
     <version>0.1.0</version>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <name>CardMarket</name>
     <description>CardMarket</description>
     <profiles>
