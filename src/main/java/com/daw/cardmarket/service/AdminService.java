@@ -175,4 +175,61 @@ public class AdminService {
         }
     }
 
+    /**
+     * Ejecuta el comando Maven para generar el reporte HTML de dependency-check y devuelve el archivo generado
+     * @return File del reporte HTML generado
+     */
+    public File generateDependencyCheckHtmlReport() {
+        try {
+            String command;
+            if (System.getProperty("os.name").toLowerCase().contains("windows")) {
+                command = ".\\mvnw.cmd";
+            } else {
+                command = "./mvnw";
+            }
+
+            ProcessBuilder processBuilder = new ProcessBuilder(
+                command,
+                "dependency-check:check"
+            );
+
+            File projectDir = new File(System.getProperty("user.dir"));
+            processBuilder.directory(projectDir);
+            processBuilder.redirectErrorStream(true);
+
+            System.out.println("Ejecutando dependency-check:check...");
+            Process process = processBuilder.start();
+
+            try (BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(process.getInputStream()))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    System.out.println(line);
+                }
+            }
+
+            int exitCode = process.waitFor();
+
+            if (exitCode == 0) {
+                // El reporte HTML suele generarse en target/dependency-check-report.html
+                File htmlReport = new File(projectDir, "target/dependency-check/dependency-check-report.html");
+                if (htmlReport.exists()) {
+                    System.out.println("Reporte HTML generado: " + htmlReport.getAbsolutePath());
+                    return htmlReport;
+                } else {
+                    System.err.println("No se encontró el reporte HTML en la ubicación esperada");
+                    return null;
+                }
+            } else {
+                System.err.println("Error al ejecutar dependency-check. Código de salida: " + exitCode);
+                return null;
+            }
+
+        } catch (IOException | InterruptedException e) {
+            System.err.println("Error al ejecutar dependency-check: " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 }

@@ -26,6 +26,9 @@ public class UsuarioService {
 
     @Transactional
     public boolean createUsuario(Usuario usuario) {
+        if (findByUsername(usuario.getNombreUsuario()).isPresent()) {
+            return false;
+        }
         usuario.setRol(Roles.USUARIO);
         usuario.setContrasenna(passwordEncoder.encode(usuario.getContrasenna()));
 
@@ -47,8 +50,12 @@ public class UsuarioService {
             usuario.setFechaNacimiento(usuarioU.getFechaNacimiento());
             usuario.setDirecciones(usuarioU.getDirecciones());
 
-            if (usuarioU.getContrasenna() != null && !usuarioU.getContrasenna().isEmpty()) {
-                usuario.setContrasenna(passwordEncoder.encode(usuarioU.getContrasenna()));
+            if (usuarioU.getContrasenna() != null) {
+                if (usuarioU.getContrasenna().startsWith("$2a$")) {
+                    usuario.setContrasenna(usuarioU.getContrasenna());
+                } else {
+                    usuario.setContrasenna(passwordEncoder.encode(usuarioU.getContrasenna()));
+                }
             }
 
             usuarioRepository.save(usuario);
@@ -65,10 +72,6 @@ public class UsuarioService {
 
     public Optional<Usuario> getUsuarioById(int id) {
         Usuario usuario = usuarioRepository.findById(id).orElse(null);
-
-        if (usuario != null) {
-            usuario.setContrasenna(null);
-        }
 
         return Optional.ofNullable(usuario);
     }

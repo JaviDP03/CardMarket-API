@@ -27,8 +27,7 @@ public class Producto extends DomainEntity {
     @Min(0)
     private int stock;
 
-    @NotBlank
-    @Column(length = 1000000)
+    @Column(columnDefinition = "TEXT")
     private String imagenB64;
 
     @ManyToOne

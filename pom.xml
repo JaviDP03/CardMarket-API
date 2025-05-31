@@ -151,6 +151,7 @@
                                 <argument>--clean</argument>
                                 <argument>--create</argument>
                                 <argument>--if-exists</argument>
+                                <argument>--no-owner</argument>
                                 <argument>--blobs</argument>
                                 <argument>--inserts</argument>
                                 <argument>--file=cardmarket_backup.sql</argument>
