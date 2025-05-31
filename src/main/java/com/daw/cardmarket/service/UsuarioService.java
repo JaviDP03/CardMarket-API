@@ -26,9 +26,10 @@ public class UsuarioService {
 
     @Transactional
     public boolean createUsuario(Usuario usuario) {
-        if (findByUsername(usuario.getNombreUsuario()).isPresent()) {
+        if (findByUsername(usuario.getNombreUsuario()).isPresent() || findByEmail(usuario.getEmail()).isPresent()) {
             return false;
         }
+
         usuario.setRol(Roles.USUARIO);
         usuario.setContrasenna(passwordEncoder.encode(usuario.getContrasenna()));
 
@@ -78,6 +79,18 @@ public class UsuarioService {
 
     public Optional<Usuario> findByUsername(String username) {
         return usuarioRepository.findByNombreUsuario(username);
+    }
+
+    public Optional<Usuario> findByEmail(String email) {
+        List<Usuario> usuarios = getAllUsuarios();
+
+        for (Usuario usuario : usuarios) {
+            if (usuario.getEmail().equals(email)) {
+                return Optional.of(usuario);
+            }
+        }
+
+        return Optional.empty();
     }
 
     @Transactional
