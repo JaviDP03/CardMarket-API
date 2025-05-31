@@ -5,6 +5,7 @@ import com.daw.cardmarket.model.Pedido;
 import com.daw.cardmarket.model.Producto;
 import com.daw.cardmarket.model.Usuario;
 import com.daw.cardmarket.repository.DireccionRepository;
+import com.daw.cardmarket.repository.ItemPedidoRepository;
 import com.daw.cardmarket.repository.PedidoRepository;
 import com.daw.cardmarket.utils.JwtUtils;
 import jakarta.transaction.Transactional;
@@ -22,6 +23,9 @@ public class PedidoService {
 
     @Autowired
     private DireccionRepository direccionRepository;
+
+    @Autowired
+    private ItemPedidoRepository itemPedidoRepository;
 
     @Autowired
     private UsuarioService usuarioService;
@@ -101,6 +105,11 @@ public class PedidoService {
     @Transactional
     public boolean deletePedido(int id) {
         if (pedidoRepository.existsById(id)) {
+            List<ItemPedido> items = pedidoRepository.findById(id).get().getItems();
+
+            for (ItemPedido item : items) {
+                itemPedidoRepository.deleteById(item.getId());
+            }
             pedidoRepository.deleteById(id);
 
             return true;

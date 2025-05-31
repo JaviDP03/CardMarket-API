@@ -51,12 +51,8 @@ public class UsuarioService {
             usuario.setFechaNacimiento(usuarioU.getFechaNacimiento());
             usuario.setDirecciones(usuarioU.getDirecciones());
 
-            if (usuarioU.getContrasenna() != null) {
-                if (usuarioU.getContrasenna().startsWith("$2a$")) {
-                    usuario.setContrasenna(usuarioU.getContrasenna());
-                } else {
-                    usuario.setContrasenna(passwordEncoder.encode(usuarioU.getContrasenna()));
-                }
+            if(usuarioU.getContrasenna() != null && !usuarioU.getContrasenna().equals(usuario.getContrasenna())) {
+                usuario.setContrasenna(passwordEncoder.encode(usuarioU.getContrasenna()));
             }
 
             usuarioRepository.save(usuario);
