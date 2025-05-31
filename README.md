@@ -7,7 +7,7 @@ Repositorio de la API (backend) del proyecto final de 2º DAW
 [![Java](https://img.shields.io/badge/Java-21-007396?logo=java&logoColor=white)](https://www.oracle.com/java/)
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.4.5-6DB33F?logo=spring-boot)](https://spring.io/projects/spring-boot)
 [![Maven](https://img.shields.io/badge/Maven-3.9.9-C71A36?logo=apache-maven)](https://maven.apache.org/)
-[![MariaDB](https://img.shields.io/badge/MariaDB-11.7.2-003545?logo=mariadb)](https://mariadb.org/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-17.5-336791?logo=postgresql)](https://www.postgresql.org/)
 [![JWT](https://img.shields.io/badge/JWT-io.jsonwebtoken-000000?logo=jsonwebtokens)](https://github.com/jwtk/jjwt)
 [![OpenAPI](https://img.shields.io/badge/OpenAPI-3.1-6BA539?logo=openapi-initiative)](https://swagger.io/specification/)
 
@@ -17,7 +17,7 @@ Repositorio de la API (backend) del proyecto final de 2º DAW
 - Spring Boot Starter Security
 - Spring Boot Starter Data JPA
 - Spring Boot Starter Tomcat (provided)
-- MariaDB Java Client
+- PostgreSQL JDBC Driver
 - Lombok
 - JJWT (JSON Web Token)
 - Springdoc OpenAPI
@@ -33,7 +33,7 @@ cd CardMarket-API
 ```
 
 ### 2. Configura la base de datos
-Asegúrate de tener una base de datos MariaDB en funcionamiento y crea una base de datos llamada `cardmarket`.
+Asegúrate de tener una base de datos PostgreSQL en funcionamiento y crea una base de datos llamada `cardmarket`.
 
 ```sql
 CREATE DATABASE cardmarket;
@@ -43,7 +43,7 @@ CREATE DATABASE cardmarket;
 Actualiza el archivo src/main/resources/application.properties con tus credenciales y hostname:
 
 ```properties
-spring.datasource.url=jdbc:mariadb://localhost:3306/cardmarket
+spring.datasource.url=jdbc:postgresql://localhost:5432/cardmarket
 spring.datasource.username=TU_USUARIO
 spring.datasource.password=TU_CONTRASEÑA
 spring.jpa.hibernate.ddl-auto=update
