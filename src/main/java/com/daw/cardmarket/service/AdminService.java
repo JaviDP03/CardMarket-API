@@ -109,10 +109,6 @@ public class AdminService {
         }
     }
 
-    /**
-     * Ejecuta el comando Maven para hacer backup de PostgreSQL y devuelve el archivo generado
-     * @return File del backup SQL generado
-     */
     public File executePostgresqlBackup() {
         try {
             // Determinar el comando según el sistema operativo
@@ -175,10 +171,6 @@ public class AdminService {
         }
     }
 
-    /**
-     * Ejecuta el comando Maven para generar el reporte HTML de dependency-check y devuelve el archivo generado
-     * @return File del reporte HTML generado
-     */
     public File generateDependencyCheckHtmlReport() {
         try {
             String command;
