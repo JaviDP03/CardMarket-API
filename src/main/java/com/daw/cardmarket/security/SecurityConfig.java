@@ -51,6 +51,8 @@ public class SecurityConfig {
                                 .requestMatchers("/admin").hasAuthority("ADMIN")
                                 .requestMatchers("/admin/editar").hasAuthority("ADMIN")
                                 .requestMatchers("/admin/{id}").hasAuthority("ADMIN")
+                                .requestMatchers("/admin/backupbd").hasAuthority("ADMIN")
+                                .requestMatchers("/admin/dependency-check-report").hasAuthority("ADMIN")
 
                                 // CategoriaController
                                 .requestMatchers(HttpMethod.GET, "/categorias").permitAll()
@@ -97,6 +99,10 @@ public class SecurityConfig {
                                 // TestController
                                 .requestMatchers("/status").permitAll()
 
+                                // Swagger
+                                .requestMatchers("/swagger-ui/**").permitAll()
+                                .requestMatchers("/v3/api-docs/**").permitAll()
+
                                 .anyRequest().authenticated()
                 );
 
@@ -111,8 +117,7 @@ public class SecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowedOriginPatterns(List.of("*"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
-        config.setAllowCredentials(true);
+        config.setAllowedHeaders(List.of("Authorization", "Content-Type", "Accept", "X-Requested-With", "Cache-Control"));
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }
